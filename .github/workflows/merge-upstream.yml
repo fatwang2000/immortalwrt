@@ -1,0 +1,60 @@
+#
+# This is free software, lisence use MIT.
+# 
+# Copyright (C) 2021 KFERMercer <KFER.Mercer@gmail.com>
+# 
+# <https://github.com/KFERMercer/OpenWrt-CI>
+#
+
+name: 检查更新上游代码
+
+on:
+  push:
+    branches:
+      - openwrt-18.06
+  schedule:
+    - cron: 30 11 * * *
+
+jobs:
+
+  Merge:
+    name: Check and Merge
+    runs-on: ubuntu-latest
+    #env:
+    #  DOWNSTREAM_BRANCH: openwrt-18.06
+    #  UPSTREAM_BRANCH: openwrt-18.06
+    strategy: 
+      matrix: 
+        branch_stream: [openwrt-18.06, master, openwrt-21.02, openwrt-18.06-dev, openwrt-18.06-k5.4] 
+    steps:
+
+    - name: Checkout ${{ matrix.branch_stream }}
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ matrix.branch_stream }}
+        fetch-depth: 0
+        lfs: true
+
+    - name: Set git config
+      run : |
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git config --global pull.rebase false
+        git config --global --list
+
+    - name: Load upstream commits
+      run: git pull https://github.com/immortalwrt/immortalwrt.git ${{ matrix.branch_stream }} --log --no-commit
+
+    - name: Apply commit changes
+      run: |
+        if [ -f ./.git/MERGE_MSG ]; then
+        mkdir ./tmp && cp ./.git/MERGE_MSG ./tmp/message
+        sed -i "1c [bot] AutoMerging: merge all upstream's changes:" ./tmp/message
+        # sed -i '/^\#.*/d' ./tmp/message
+        git commit --file="./tmp/message"
+        else
+        echo "There is no merge commits."
+        fi
+
+    - name: Push Commits
+      run: git push origin ${{ matrix.branch_stream }}
