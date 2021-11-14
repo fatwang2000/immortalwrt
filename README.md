@@ -7,6 +7,9 @@ Compared the official one, we allow to use hacks or non-upstreamable patches / m
 
 Default login address: http://192.168.1.1 or http://immortalwrt.lan, username: __root__, password: __password__.
 
+[![自动编译固件](https://github.com/fatwang2000/immortalwrt/actions/workflows/build_openwrt_21.yml/badge.svg)](https://github.com/fatwang2000/immortalwrt/actions/workflows/build_openwrt_21.yml)<br/>
+__每天北京时间19:30检查代码是否有更新，如果有就自动编译__
+
 ## Development
 To build your own firmware you need a GNU/Linux, BSD or MacOSX system (case sensitive filesystem required). Cygwin is unsupported because of the lack of a case sensitive file system.<br/>
 
