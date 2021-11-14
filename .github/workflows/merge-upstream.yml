@@ -9,9 +9,9 @@
 name: 检查更新上游代码
 
 on:
-  push:
-    branches:
-      - openwrt-18.06
+  #push:
+  #  branches:
+  #    - openwrt-18.06
   schedule:
     - cron: 30 11 * * *
 
