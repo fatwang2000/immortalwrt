@@ -126,9 +126,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: OpenWrt_V21.02_x86_64_squashfs-firmware
-          file: ./artifact/firmware1/immortalwrt-x86-64-generic-squashfs-combined.img.gz
+          path: ./artifact/firmware1/
 
-      - name: Deliver firmware
+      - name: Deliver X86_64 efi firmware
         uses: actions/upload-artifact@v2
         with:
           name: OpenWrt_V21.02_x86_64_efi_firmware
